@@ -1,0 +1,19 @@
+{
+    "mysql": {
+        "host": "43.143.136.7",
+        "port": 3306,
+        "username": "root",
+        "password": "1qaz!QAZ"
+    },
+    "redis": {
+        "host": "43.143.136.7",
+        "port": 6379,
+        "password": "",
+        "database": 0
+    },
+    "consul": {
+        "host": "127.0.0.1",
+        "port": 8500,
+        "config": "gogo-system/common"
+    } 
+}

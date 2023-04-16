@@ -1,0 +1,104 @@
+##################################################################################################
+# dir service
+##################################################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: dir
+  namespace: gogo-system
+  labels:
+    app: dir
+    service: dir
+spec:
+  ports:
+    - port: 9080
+      name: http
+  selector:
+    app: dir
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dir-v1
+  namespace: gogo-system
+  labels:
+    app: dir
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dir
+      version: v1
+  template:
+    metadata:
+      # istio grpc proxyless
+#      annotations:
+#        inject.istio.io/templates: grpc-agent
+#        proxy.istio.io/config: '{"holdApplicationUntilProxyStarts": true}'
+      labels:
+        app: dir
+        version: v1
+    spec:
+      serviceAccountName: gogo-dir
+      containers:
+        - name: dir
+          image: 192.168.0.7:5000/gogo/dir:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9080
+          securityContext:
+            runAsUser: 1000
+---
+##################################################################################################
+# resource service
+##################################################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: resource
+  namespace: gogo-system
+  labels:
+    app: resource
+    service: resource
+spec:
+  ports:
+    - port: 9080
+      name: http
+  selector:
+    app: resource
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: resource-v1
+  namespace: gogo-system
+  labels:
+    app: resource
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: resource
+      version: v1
+  template:
+    metadata:
+      # istio grpc proxyless
+#      annotations:
+#        inject.istio.io/templates: grpc-agent
+#        proxy.istio.io/config: '{"holdApplicationUntilProxyStarts": true}'
+      labels:
+        app: resource
+        version: v1
+    spec:
+      serviceAccountName: gogo-resource
+      containers:
+        - name: resource
+          image: 192.168.0.7:5000/gogo/resource:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9080
+          securityContext:
+            runAsUser: 1000
+---
