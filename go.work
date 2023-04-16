@@ -1,7 +1,10 @@
 go 1.19
 
 use (
+	./constant
+	./core/auth
 	./core/common
+	./core/config
 	./core/db
 	./utils
 )

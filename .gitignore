@@ -2,4 +2,3 @@
 .idea
 *.iml
 .vscode
-go.sum

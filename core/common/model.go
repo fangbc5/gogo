@@ -23,7 +23,7 @@ type Rsp struct {
 	Data interface{} `json:"data"`
 }
 
-func GetRsp() *Rsp {
+func GetRspOk() *Rsp {
 	return &Rsp{http.StatusOK, "ok", nil}
 }
 func GetRspMsg(msg string) *Rsp {
@@ -33,16 +33,20 @@ func GetRspData(r interface{}) *Rsp {
 	return &Rsp{http.StatusOK, "ok", r}
 }
 
-func GetFailMsg(msg string) *Rsp {
-	return &Rsp{http.StatusNoContent, msg, nil}
+func GetRspFail() *Rsp {
+	return &Rsp{999, "fail", nil}
 }
 
-func GetRspAll(code int, msg string, r interface{}) *Rsp {
+func GetFailMsg(msg string) *Rsp {
+	return &Rsp{999, msg, nil}
+}
+
+func GetRsp(code int, msg string, r interface{}) *Rsp {
 	return &Rsp{code, msg, r}
 }
 
 func GetPageRsp() *PageRsp {
-	return &PageRsp{*GetRsp(), 0, 0}
+	return &PageRsp{*GetRspOk(), 0, 0}
 }
 
 func MakePageArg() *PageReq {
