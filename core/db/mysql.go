@@ -1,8 +1,8 @@
 package db
 
 import (
-	"gogo/core/config"
-	"gogo/utils"
+	"github.com/fangbc5/gogo/core/config"
+	"github.com/fangbc5/gogo/utils"
 	"log"
 	"time"
 

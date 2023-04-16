@@ -2,7 +2,7 @@ package db
 
 import (
 	"context"
-	"gogo/core/config"
+	"github.com/fangbc5/gogo/core/config"
 	"log"
 
 	"github.com/go-redis/redis/v8"

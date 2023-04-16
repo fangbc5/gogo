@@ -3,7 +3,7 @@ package auth
 import (
 	"github.com/casbin/casbin/v2"
 	gormadapter "github.com/casbin/gorm-adapter/v3"
-	"gogo/core/db"
+	"github.com/fangbc5/gogo/core/db"
 	"log"
 	"sync"
 )

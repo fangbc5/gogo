@@ -2,9 +2,9 @@ package auth
 
 import (
 	"errors"
-	"gogo/constant"
-	"gogo/core/config"
-	"gogo/core/db"
+	"github.com/fangbc5/gogo/constant"
+	"github.com/fangbc5/gogo/core/config"
+	"github.com/fangbc5/gogo/core/db"
 	"strings"
 
 	"github.com/golang-jwt/jwt/v4"

@@ -1,4 +1,4 @@
-module gogo
+module github.com/fangbc5/gogo
 
 go 1.19
 

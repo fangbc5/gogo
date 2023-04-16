@@ -1,11 +1,11 @@
 package middleware
 
 import (
-	"gogo/constant"
-	"gogo/core/common"
-	"gogo/core/db"
-	"gogo/core/auth"
-	"gogo/utils"
+	"github.com/fangbc5/gogo/constant"
+	"github.com/fangbc5/gogo/core/common"
+	"github.com/fangbc5/gogo/core/db"
+	"github.com/fangbc5/gogo/core/auth"
+	"github.com/fangbc5/gogo/utils"
 	"log"
 	"net/http"
 	"regexp"
