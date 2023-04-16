@@ -12,7 +12,7 @@ var rdb *redis.Client
 var ctx = context.Background()
 
 func RedisConn(config config.Redis) {
-	addr := config.Host + ":" + config.Port
+	addr := config.Address + ":" + config.Port
 	password := ""
 	if config.Password != "" {
 		password = config.Password

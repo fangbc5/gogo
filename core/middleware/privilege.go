@@ -4,7 +4,7 @@ import (
 	"gogo/constant"
 	"gogo/core/common"
 	"gogo/core/db"
-	"gogo/core/perm"
+	"gogo/core/auth"
 	"gogo/utils"
 	"log"
 	"net/http"
@@ -42,7 +42,7 @@ func Privilege() gin.HandlerFunc {
 			c.Abort()
 		} else {
 			//不在白名单中，判断用户是否已登录
-			username := db.RedisCache("get", constant.TokenKey + token)
+			username := db.RedisCache("get", constant.TokenKey+token)
 			if utils.IsNull(username) {
 				//用户登录状态已过期或token无效
 				c.JSON(http.StatusOK, common.GetRspAll(http.StatusUnauthorized, "用户登录状态已过期或token错误，请重新登录", nil))
@@ -65,7 +65,7 @@ func Privilege() gin.HandlerFunc {
 
 func casbinValid(sub string, obj string, act string) (bool, string) {
 	//用户已登录,使用casbin进行鉴权操作
-	e := perm.MakeEnforcer()
+	e := auth.MakeEnforcer()
 	e.EnableLog(true)
 	err := e.LoadPolicy()
 	if err != nil {
@@ -84,7 +84,7 @@ func casbinValid(sub string, obj string, act string) (bool, string) {
 }
 
 func tokenValid(token string) (bool, string) {
-	claims, err := perm.VerifyToken(token)
+	claims, err := auth.VerifyToken(token)
 	if err != nil {
 		return false, err.Error()
 	}

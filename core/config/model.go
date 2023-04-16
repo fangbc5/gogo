@@ -13,7 +13,7 @@ type Server struct {
 
 // Mysql MySQL配置结构体
 type Mysql struct {
-	Host  string
+	Address  string
 	Port     string
 	Username string
 	Password string
@@ -22,14 +22,14 @@ type Mysql struct {
 
 // Redis Redis配置结构体
 type Redis struct {
-	Host     string
+	Address     string
 	Port     string
 	Password string
 	Database int
 }
 
 type Consul struct {
-	Host string
+	Address string
 	Port    int
 	Config  string
 }

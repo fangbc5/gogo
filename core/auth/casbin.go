@@ -1,4 +1,4 @@
-package perm
+package auth
 
 import (
 	"github.com/casbin/casbin/v2"
