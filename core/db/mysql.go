@@ -1,7 +1,6 @@
 package db
 
 import (
-	"github.com/fangbc5/gogo/core/config"
 	"github.com/fangbc5/gogo/utils"
 	"log"
 	"time"
@@ -14,7 +13,7 @@ import (
 var mysqlClient *gorm.DB
 
 // Conn 连接数据库
-func MysqlConn(config config.Mysql) {
+func MysqlConn(config Mysql) {
 	//dsn := "setsdbuserp1:ZdRe7#y1Xb-!%7p1@tcp(192.168.253.6:3306)/go_test?charset=utf8&parseTime=True&loc=Local"
 	dsn := config.Username + ":" + config.Password + "@tcp(" + config.Address + ":" + config.Port + ")" + "/" + config.Database + "?charset=utf8&parseTime=True&loc=Local"
 	//创建连接

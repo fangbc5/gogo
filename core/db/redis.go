@@ -2,7 +2,6 @@ package db
 
 import (
 	"context"
-	"github.com/fangbc5/gogo/core/config"
 	"log"
 
 	"github.com/go-redis/redis/v8"
@@ -11,7 +10,7 @@ import (
 var rdb *redis.Client
 var ctx = context.Background()
 
-func RedisConn(config config.Redis) {
+func RedisConn(config Redis) {
 	addr := config.Address + ":" + config.Port
 	password := ""
 	if config.Password != "" {
