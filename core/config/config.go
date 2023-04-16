@@ -24,8 +24,9 @@ type Config struct {
 	Env      string
 	Profile  string
 	Server   ServerConfig
-	Tracing  TracingConfig
+	Auth     AuthConfig
 	Consul   ConsulConfig
+	Tracing  TracingConfig
 	Database DatabaseConfig
 	Cache    CacheConfig
 }
@@ -34,6 +35,11 @@ type ServerConfig struct {
 	Name    string
 	Port    string
 	Version string
+}
+
+type AuthConfig struct {
+	JwtSecret string
+	TokenLife string
 }
 
 type ConsulConfig struct {
