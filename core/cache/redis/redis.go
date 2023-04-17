@@ -7,6 +7,14 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
+// Redis Redis配置结构体
+type Redis struct {
+	Address     string
+	Port     string
+	Password string
+	Database int
+}
+
 var rdb *redis.Client
 var ctx = context.Background()
 

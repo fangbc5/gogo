@@ -10,6 +10,15 @@ import (
 	"gorm.io/gorm/schema"
 )
 
+// Mysql MySQL配置结构体
+type Mysql struct {
+	Address  string
+	Port     string
+	Username string
+	Password string
+	Database string
+}
+
 var mysqlClient *gorm.DB
 
 // Conn 连接数据库

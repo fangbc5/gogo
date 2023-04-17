@@ -3,8 +3,13 @@ go 1.19
 use (
 	./constant
 	./core/auth
+	./core/cache/bigcache
+	./core/cache/redis
 	./core/common
 	./core/config
-	./core/db
+	./core/database/mysql
+	./core/database/oracle
+	./core/logger/logrus
+	./core/logger/zap
 	./utils
 )
