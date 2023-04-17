@@ -14,7 +14,7 @@ const (
 	Profile      = "dev"
 	Name         = "myservice"
 	Port         = "38080"
-	Version      = "1.0.0"
+	Version      = "v1.0.0"
 	ConsulAddr   = "127.0.0.1:8500"
 	ConsulPrefix = "/micro/config"
 	ENV          = "env"
@@ -81,21 +81,37 @@ var cfg *Config = &Config{
 	},
 	Consul: ConsulConfig{
 		Addr:   ConsulAddr,
-		Prefix: ConsulPrefix + "/" + Profile + "/" + Name,
+		Prefix: ConsulPrefix,
 	},
 }
+
+type Option func()
 
 func Get() *Config {
 	return cfg
 }
 
-func WithConsul(addr string, prefix string) {
-	cfg.Consul.Addr = addr
-	cfg.Consul.Prefix = prefix
+func WithName(name string) Option {
+	return func() {
+		cfg.Server.Name = name
+	}
+}
+func WithConsulAddr(addr string) Option {
+	return func() {
+		cfg.Consul.Addr = addr
+	}
 }
 
-func SetEnv(env string) {
-	cfg.Env = env
+func WithConsulPrefix(prefix string) Option {
+	return func() {
+		cfg.Consul.Prefix = prefix
+	}
+}
+
+func WithEnv(env string) Option {
+	return func() {
+		cfg.Env = env
+	}
 }
 
 func GetName() string {
@@ -114,7 +130,11 @@ func Tracing() TracingConfig {
 	return cfg.Tracing
 }
 
-func Load() error {
+func Load(opts ...Option) error {
+	//设置参数
+	for _, opt := range opts {
+		opt()
+	}
 	//加载profile
 	configor, err := config.NewConfig(config.WithSource(source.NewSource(
 		source.WithAddress(cfg.Consul.Addr),
@@ -130,9 +150,9 @@ func Load() error {
 	if err := configor.Get(cfg.Env).Scan(cfg); err != nil {
 		return errors.Wrap(err, "configor.Scan")
 	}
-	configor.Get(cfg.Profile, Name).Scan(cfg)
+	configor.Get(cfg.Profile, cfg.Server.Name).Scan(cfg)
 	//监听配置变化
-	w, err := configor.Watch(cfg.Profile, Name)
+	w, err := configor.Watch(cfg.Profile, cfg.Server.Name)
 	if err != nil {
 		return errors.Wrap(err, "configor.Watch")
 	}

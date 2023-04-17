@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/fangbc5/gogo/constant"
-	"github.com/fangbc5/gogo/core/cache/redis"
+	cache "github.com/fangbc5/gogo/core/cache/redis"
 	"github.com/fangbc5/gogo/core/config"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -27,7 +27,7 @@ func VerifyToken(tokenString string) (*MyClaims, error) {
 
 	if claims, ok := token.Claims.(*MyClaims); ok && token.Valid {
 		//校验成功应该刷新token过期时间
-		redis.RedisCache("expire", constant.TokenKey+tokenString, config.Get().Auth.TokenLife)
+		cache.RedisCache("expire", constant.TokenKey+tokenString, config.Get().Auth.TokenLife)
 		return claims, nil
 	}
 	return nil, errors.New("invalid token")
