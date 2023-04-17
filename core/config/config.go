@@ -85,8 +85,8 @@ var cfg *Config = &Config{
 	},
 }
 
-func Get() Config {
-	return *cfg
+func Get() *Config {
+	return cfg
 }
 
 func WithConsul(addr string, prefix string) {
@@ -118,7 +118,7 @@ func Load() error {
 	//加载profile
 	configor, err := config.NewConfig(config.WithSource(source.NewSource(
 		source.WithAddress(cfg.Consul.Addr),
-		source.WithPrefix(ConsulPrefix),
+		source.WithPrefix(cfg.Consul.Prefix),
 		source.StripPrefix(true),
 	)))
 	if err != nil {

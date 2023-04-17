@@ -1,11 +1,12 @@
 package auth
 
 import (
+	"log"
+	"sync"
+
 	"github.com/casbin/casbin/v2"
 	gormadapter "github.com/casbin/gorm-adapter/v3"
 	"github.com/fangbc5/gogo/core/database/mysql"
-	"log"
-	"sync"
 )
 
 var auth *casbin.Enforcer
