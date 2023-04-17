@@ -9,7 +9,8 @@ use (
 	./core/config
 	./core/database/mysql
 	./core/database/oracle
-	./core/logger/logrus
-	./core/logger/zap
+	./core/logger
+	./core/logger/plugins/logrus
+	./core/logger/plugins/zap
 	./utils
 )

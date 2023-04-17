@@ -85,32 +85,27 @@ var cfg *Config = &Config{
 	},
 }
 
-type Option func()
+type Option func(*Config)
 
 func Get() *Config {
 	return cfg
 }
 
 func WithName(name string) Option {
-	return func() {
-		cfg.Server.Name = name
+	return func(c *Config) {
+		c.Server.Name = name
 	}
 }
-func WithConsulAddr(addr string) Option {
-	return func() {
-		cfg.Consul.Addr = addr
-	}
-}
-
-func WithConsulPrefix(prefix string) Option {
-	return func() {
-		cfg.Consul.Prefix = prefix
+func WithConsul(addr string, prefix string) Option {
+	return func(c *Config) {
+		c.Consul.Addr = addr
+		c.Consul.Prefix = prefix
 	}
 }
 
 func WithEnv(env string) Option {
-	return func() {
-		cfg.Env = env
+	return func(c *Config) {
+		c.Env = env
 	}
 }
 
@@ -133,7 +128,7 @@ func Tracing() TracingConfig {
 func Load(opts ...Option) error {
 	//设置参数
 	for _, opt := range opts {
-		opt()
+		opt(cfg)
 	}
 	//加载profile
 	configor, err := config.NewConfig(config.WithSource(source.NewSource(
