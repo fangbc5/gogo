@@ -10,7 +10,7 @@ use (
 	./core/database/mysql
 	./core/database/oracle
 	./core/logger
-	./core/logger/plugins/logrus
-	./core/logger/plugins/zap
+	./plugins/logger/logrus
+	./plugins/logger/zap
 	./utils
 )
