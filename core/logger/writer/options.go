@@ -16,7 +16,7 @@ type Options struct {
 
 func setDefault() Options {
 	return Options{
-		path:   "/tmp/go-admin",
+		path:   "/tmp/gogo/logs",
 		suffix: "log",
 	}
 }

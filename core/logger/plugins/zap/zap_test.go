@@ -67,7 +67,7 @@ func TestFields(t *testing.T) {
 }
 
 func TestFile(t *testing.T) {
-	output, err := writer.NewFileWriter(writer.WithPath("testdata"), writer.WithSuffix("log"))
+	output, err := writer.NewFileWriter(writer.WithPath("D:\\programs\\goproject\\src\\gogo\\logs"), writer.WithSuffix("log"))
 	if err != nil {
 		t.Errorf("logger setup error: %s", err.Error())
 	}
