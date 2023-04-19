@@ -1,6 +1,6 @@
-module github.com/fangbc5/gogo/core/config
+module github.com/fangbc5/gogo/core/config/consul
 
-go 1.19
+go 1.20
 
 require (
 	github.com/go-micro/plugins/v4/config/source/consul v1.2.0

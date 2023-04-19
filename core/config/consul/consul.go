@@ -1,4 +1,4 @@
-package config
+package consul
 
 import (
 	"fmt"
@@ -20,93 +20,28 @@ const (
 	ENV          = "env"
 )
 
-type Config struct {
-	Env      string
-	Profile  string
-	Server   ServerConfig
-	Auth     AuthConfig
-	Consul   ConsulConfig
-	Tracing  TracingConfig
-	Database DatabaseConfig
-	Cache    CacheConfig
-}
-
-type ServerConfig struct {
-	Name    string
-	Port    string
-	Version string
-}
-
-type AuthConfig struct {
-	JwtSecret string
-	TokenLife string
-}
-
-type ConsulConfig struct {
-	Addr   string
-	Prefix string
-}
-
-type TracingConfig struct {
-	Enable bool
-	Jaeger JaegerConfig
-}
-
-type JaegerConfig struct {
-	URL string
-}
-
-type DatabaseConfig struct {
-	Address  string
-	Port     string
-	Username string
-	Password string
-	Database string
-}
-
-type CacheConfig struct {
-	Address  string
-	Port     string
-	Database string
-	Password string
-}
-
-var cfg *Config = &Config{
-	Env:     ENV,
-	Profile: Profile,
-	Server: ServerConfig{
-		Name:    Name,
-		Port:    Port,
-		Version: Version,
-	},
-	Consul: ConsulConfig{
-		Addr:   ConsulAddr,
-		Prefix: ConsulPrefix,
-	},
-}
-
-type Option func(*Config)
-
-func Get() *Config {
-	return cfg
-}
+var cfg *Options
 
 func WithName(name string) Option {
-	return func(c *Config) {
+	return func(c *Options) {
 		c.Server.Name = name
 	}
 }
 func WithConsul(addr string, prefix string) Option {
-	return func(c *Config) {
+	return func(c *Options) {
 		c.Consul.Addr = addr
 		c.Consul.Prefix = prefix
 	}
 }
 
 func WithEnv(env string) Option {
-	return func(c *Config) {
+	return func(c *Options) {
 		c.Env = env
 	}
+}
+
+func Get() *Options {
+	return cfg
 }
 
 func GetName() string {
@@ -125,7 +60,20 @@ func Tracing() TracingConfig {
 	return cfg.Tracing
 }
 
-func Load(opts ...Option) error {
+func Init(opts ...Option) error {
+	cfg := &Options{
+		Env:     ENV,
+		Profile: Profile,
+		Server: ServerConfig{
+			Name:    Name,
+			Port:    Port,
+			Version: Version,
+		},
+		Consul: ConsulConfig{
+			Addr:   ConsulAddr,
+			Prefix: ConsulPrefix,
+		},
+	}
 	//设置参数
 	for _, opt := range opts {
 		opt(cfg)

@@ -1,15 +1,19 @@
 go 1.19
 
 use (
+	./attachment/download
+	./attachment/upload
 	./constant
 	./core/auth
 	./core/cache/bigcache
 	./core/cache/redis
 	./core/common
-	./core/config
+	./core/config/consul
+	./core/config/nacos
 	./core/database/mysql
 	./core/database/oracle
 	./core/logger
+	./plugins/attachment/file
 	./plugins/logger/logrus
 	./plugins/logger/zap
 	./utils
