@@ -55,7 +55,7 @@ func Tracing() TracingConfig {
 }
 
 func GetRegistry() registry.Registry {
-	return nacos.NewRegistry(registry.Addrs(cfg.Nacos.Addr...))
+	return nacos.NewRegistry(nacos.WithAddress(cfg.Nacos.Addr))
 }
 
 func Init(opts ...Option) error {
