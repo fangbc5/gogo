@@ -60,6 +60,10 @@ func Tracing() TracingConfig {
 	return cfg.Tracing
 }
 
+func GetRegistry() registry.Registry {
+	return consul.NewRegistry(registry.Addrs(cfg.Consul.Addr))
+}
+
 func Init(opts ...Option) error {
 	cfg := &Options{
 		Env:     ENV,
@@ -111,8 +115,4 @@ func Init(opts ...Option) error {
 	}()
 	// db.MysqlConn(db.Mysql{Address: cfg.Database.Address, Port: cfg.Database.Port, Username: cfg.Database.Username, Password: cfg.Database.Password, Database: cfg.Database.Database})
 	return nil
-}
-
-func ConsulRegistry() registry.Registry {
-	return consul.NewRegistry(registry.Addrs(cfg.Consul.Addr))
 }

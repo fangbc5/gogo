@@ -54,6 +54,10 @@ func Tracing() TracingConfig {
 	return cfg.Tracing
 }
 
+func GetRegistry() registry.Registry {
+	return nacos.NewRegistry(registry.Addrs(cfg.Nacos.Addr...))
+}
+
 func Init(opts ...Option) error {
 	cfg := &Options{
 		Server: ServerConfig{
@@ -88,8 +92,4 @@ func Init(opts ...Option) error {
 		return errors.Wrap(err, "configor.Load")
 	}
 	return nil
-}
-
-func NacosRegistry() registry.Registry {
-	return nacos.NewRegistry(registry.Addrs(cfg.Nacos.Addr...))
 }
