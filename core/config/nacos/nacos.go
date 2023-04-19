@@ -91,5 +91,23 @@ func Init(opts ...Option) error {
 	if err := configor.Load(); err != nil {
 		return errors.Wrap(err, "configor.Load")
 	}
+	if err := configor.Scan(cfg); err != nil {
+		return errors.Wrap(err, "configor.Scan")
+	}
+	//监听配置变化
+	w, err := configor.Watch()
+	if err != nil {
+		return errors.Wrap(err, "configor.Watch")
+	}
+	go func() {
+		for {
+			v, err := w.Next()
+			if err != nil {
+				fmt.Println(errors.Wrap(err, "configor.WatchNext"))
+			}
+			v.Scan(cfg)
+			fmt.Println(cfg)
+		}
+	}()
 	return nil
 }
