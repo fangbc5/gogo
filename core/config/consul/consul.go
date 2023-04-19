@@ -65,7 +65,7 @@ func GetRegistry() registry.Registry {
 }
 
 func Init(opts ...Option) error {
-	cfg := &Options{
+	cfg = &Options{
 		Env:     ENV,
 		Profile: Profile,
 		Server: ServerConfig{

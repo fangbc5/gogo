@@ -59,7 +59,7 @@ func GetRegistry() registry.Registry {
 }
 
 func Init(opts ...Option) error {
-	cfg := &Options{
+	cfg = &Options{
 		Server: ServerConfig{
 			Name:    Name,
 			Port:    Port,
