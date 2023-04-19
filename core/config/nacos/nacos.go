@@ -16,8 +16,8 @@ const (
 	Port        = "38080"
 	Version     = "v1.0.0"
 	NacosAddr   = "127.0.0.1:8848"
-	NacosDataId = "myservice-dev.yml"
-	NacosGroup  = "gogo"
+	NacosDataId = "myservice-dev.yaml"
+	NacosGroup  = "DEFAULT_GROUP"
 	Profile     = "DEV"
 )
 
@@ -55,7 +55,7 @@ func Tracing() TracingConfig {
 }
 
 func GetRegistry() registry.Registry {
-	return nacos.NewRegistry(nacos.WithAddress(cfg.Nacos.Addr))
+	return nacos.NewRegistry(registry.Addrs(cfg.Nacos.Addr...))
 }
 
 func Init(opts ...Option) error {
