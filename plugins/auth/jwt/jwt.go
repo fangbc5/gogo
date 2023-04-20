@@ -6,12 +6,7 @@ import (
 
 	"github.com/fangbc5/gogo/core/auth"
 	jwtToken "github.com/fangbc5/gogo/plugins/auth/jwt/token"
-	"go-micro.dev/v4/util/cmd"
 )
-
-func init() {
-	cmd.DefaultAuths["jwt"] = NewAuth
-}
 
 // NewAuth returns a new instance of the Auth service.
 func NewAuth(opts ...auth.Option) auth.Auth {
