@@ -1,4 +1,4 @@
-module gogo/core/auth
+module github.com/fangbc5/gogo/core/auth
 
 go 1.20
 
