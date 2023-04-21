@@ -30,11 +30,11 @@ type Auth interface {
 	// Options set for auth
 	Options() Options
 	// Generate a new account
-	Generate(id string, opts ...GenerateOption) (*Account, error)
+	Generate(id string, opts ...GenerateOption) (*Token, error)
 	// Inspect a token
 	Inspect(token string) (*Account, error)
-	// Token generated using refresh token or credentials
-	Token(opts ...TokenOption) (*Token, error)
+	// Refresh Token generated using refresh token or credentials
+	Refresh(opts ...GenerateOption) (*Token, error)
 	// String returns the name of the implementation
 	String() string
 }
@@ -67,7 +67,7 @@ type Account struct {
 	Secret string `json:"secret"`
 }
 
-// Token can be short or long lived.
+// Token can be short or long-lived.
 type Token struct {
 	// The token to be used for accessing resources
 	AccessToken string `json:"access_token"`

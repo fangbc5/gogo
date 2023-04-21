@@ -1,4 +1,4 @@
-package db
+package redis
 
 import (
 	"context"
@@ -7,31 +7,15 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
-// Redis Redis配置结构体
-type Redis struct {
-	Address     string
-	Port     string
-	Password string
-	Database int
-}
-
 var rdb *redis.Client
 var ctx = context.Background()
 
-func RedisConn(config Redis) {
-	addr := config.Address + ":" + config.Port
-	password := ""
-	if config.Password != "" {
-		password = config.Password
-	}
-	database := 0
-	if config.Database != 0 {
-		database = config.Database
-	}
+func Init(opts ...Option) {
+	options := NewOptions(opts...)
 	rdb = redis.NewClient(&redis.Options{
-		Addr:     addr,
-		Password: password, // no password set
-		DB:       database, // use default DB
+		Addr:     options.Address + ":" + options.Port,
+		Password: options.Password, // no password set
+		DB:       options.Database, // use default DB
 	})
 	rdb.Conn(ctx)
 	pong := rdb.Ping(ctx)

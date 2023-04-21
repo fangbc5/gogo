@@ -1,53 +1,56 @@
-package db
+package bigcache
 
 import (
 	"context"
 	"github.com/allegro/bigcache/v3"
 	"log"
-	"time"
 )
 
 var cache *bigcache.BigCache
 
-func BigCacheConn() {
+func Init(opts ...Option) {
+	options := NewOptions(opts...)
 	config := bigcache.Config{
 		// number of shards (must be a power of 2)
-		Shards: 1024,
+		Shards: options.Shards,
 
 		// time after which entry can be evicted
-		LifeWindow: 10 * time.Minute,
+		LifeWindow: options.LifeWindow,
 
 		// Interval between removing expired entries (clean up).
 		// If set to <= 0 then no action is performed.
 		// Setting to < 1 second is counterproductive — bigcache has a one second resolution.
-		CleanWindow: 5 * time.Minute,
+		CleanWindow: options.CleanWindow,
 
 		// rps * lifeWindow, used only in initial memory allocation
-		MaxEntriesInWindow: 1000 * 10 * 60,
+		MaxEntriesInWindow: options.MaxEntriesInWindow,
 
 		// max entry size in bytes, used only in initial memory allocation
-		MaxEntrySize: 500,
+		MaxEntrySize: options.MaxEntrySize,
 
 		// prints information about additional memory allocation
-		Verbose: true,
+		Verbose: options.Verbose,
 
 		// cache will not allocate more memory than this limit, value in MB
 		// if value is reached then the oldest entries can be overridden for the new ones
 		// 0 value means no size limit
-		HardMaxCacheSize: 8192,
+		HardMaxCacheSize: options.HardMaxCacheSize,
 
 		// callback fired when the oldest entry is removed because of its expiration time or no space left
 		// for the new entry, or because delete was called. A bitmask representing the reason will be returned.
 		// Default value is nil which means no callback and it prevents from unwrapping the oldest entry.
-		OnRemove: nil,
+		OnRemove: options.OnRemove,
 
 		// OnRemoveWithReason is a callback fired when the oldest entry is removed because of its expiration time or no space left
 		// for the new entry, or because delete was called. A constant representing the reason will be passed through.
 		// Default value is nil which means no callback and it prevents from unwrapping the oldest entry.
 		// Ignored if OnRemove is specified.
 	}
-	cache, _ = bigcache.New(context.Background(), config)
-
+	bc, err := bigcache.New(context.Background(), config)
+	if err != nil {
+		log.Fatal(err)
+	}
+	cache = bc
 }
 
 func BigCacheSet(key string, value string) {
@@ -60,6 +63,10 @@ func BigCacheSet(key string, value string) {
 func BigCacheGet(key string) string {
 	val, _ := cache.Get(key)
 	return string(val)
+}
+
+func BigCacheDelete(key string) error {
+	return cache.Delete(key)
 }
 
 func BigCacheClose() {

@@ -2,22 +2,9 @@ package auth
 
 import (
 	"context"
+	"github.com/fangbc5/gogo/core/logger"
 	"time"
-
-	"go-micro.dev/v4/logger"
 )
-
-func NewOptions(opts ...Option) Options {
-	options := Options{
-		Logger: logger.DefaultLogger,
-	}
-
-	for _, o := range opts {
-		o(&options)
-	}
-
-	return options
-}
 
 type Options struct {
 	// Namespace the service belongs to
@@ -36,33 +23,42 @@ type Options struct {
 	Addrs []string
 	// Logger is the underline logger
 	Logger logger.Logger
+	// Store to persist the tokens
+	//Store store.Store
 }
 
 type Option func(o *Options)
 
-// Addrs is the auth addresses to use.
-func Addrs(addrs ...string) Option {
+// WithAddrs is the auth addresses to use.
+func WithAddrs(addrs ...string) Option {
 	return func(o *Options) {
 		o.Addrs = addrs
 	}
 }
 
-// Namespace the service belongs to.
-func Namespace(n string) Option {
+// WithNamespace the service belongs to.
+func WithNamespace(n string) Option {
 	return func(o *Options) {
 		o.Namespace = n
 	}
 }
 
-// PublicKey is the JWT public key.
-func PublicKey(key string) Option {
+// WithStore sets the token providers store.
+//func WithStore(s store.Store) Option {
+//	return func(o *Options) {
+//o.Store = s
+//}
+//}
+
+// WithPublicKey sets the JWT public key.
+func WithPublicKey(key string) Option {
 	return func(o *Options) {
 		o.PublicKey = key
 	}
 }
 
-// PrivateKey is the JWT private key.
-func PrivateKey(key string) Option {
+// WithPrivateKey sets the JWT private key.
+func WithPrivateKey(key string) Option {
 	return func(o *Options) {
 		o.PrivateKey = key
 	}
@@ -75,19 +71,31 @@ func WithLogger(l logger.Logger) Option {
 	}
 }
 
-// Credentials sets the auth credentials.
-func Credentials(id, secret string) Option {
+// WithCredentials sets the auth credentials.
+func WithCredentials(id, secret string) Option {
 	return func(o *Options) {
 		o.ID = id
 		o.Secret = secret
 	}
 }
 
-// ClientToken sets the auth token to use when making requests.
-func ClientToken(token *Token) Option {
+// WithToken sets the auth token to use when making requests.
+func WithToken(token *Token) Option {
 	return func(o *Options) {
 		o.Token = token
 	}
+}
+
+func NewOptions(opts ...Option) Options {
+	options := Options{
+		Logger: logger.DefaultLogger,
+	}
+
+	for _, o := range opts {
+		o(&options)
+	}
+
+	return options
 }
 
 type GenerateOptions struct {
@@ -101,6 +109,10 @@ type GenerateOptions struct {
 	Type string
 	// Secret used to authenticate the account
 	Secret string
+	// RefreshToken is used to refresh a token
+	RefreshToken string
+	// Expiry for the token
+	Expiry time.Duration
 }
 
 type GenerateOption func(o *GenerateOptions)
@@ -140,58 +152,29 @@ func WithScopes(s ...string) GenerateOption {
 	}
 }
 
+func WithRefreshToken(rt string) GenerateOption {
+	return func(o *GenerateOptions) {
+		o.RefreshToken = rt
+	}
+}
+
+// WithExpiry for the generated account's token expires.
+func WithExpiry(d time.Duration) GenerateOption {
+	return func(o *GenerateOptions) {
+		o.Expiry = d
+	}
+}
+
 // NewGenerateOptions from a slice of options.
 func NewGenerateOptions(opts ...GenerateOption) GenerateOptions {
 	var options GenerateOptions
 	for _, o := range opts {
 		o(&options)
 	}
-	return options
-}
-
-type TokenOptions struct {
-	// ID for the account
-	ID string
-	// Secret for the account
-	Secret string
-	// RefreshToken is used to refesh a token
-	RefreshToken string
-	// Expiry is the time the token should live for
-	Expiry time.Duration
-}
-
-type TokenOption func(o *TokenOptions)
-
-// WithExpiry for the token.
-func WithExpiry(ex time.Duration) TokenOption {
-	return func(o *TokenOptions) {
-		o.Expiry = ex
-	}
-}
-
-func WithCredentials(id, secret string) TokenOption {
-	return func(o *TokenOptions) {
-		o.ID = id
-		o.Secret = secret
-	}
-}
-
-func WithToken(rt string) TokenOption {
-	return func(o *TokenOptions) {
-		o.RefreshToken = rt
-	}
-}
-
-// NewTokenOptions from a slice of options.
-func NewTokenOptions(opts ...TokenOption) TokenOptions {
-	var options TokenOptions
-	for _, o := range opts {
-		o(&options)
-	}
 
 	// set default expiry of token
 	if options.Expiry == 0 {
-		options.Expiry = time.Minute
+		options.Expiry = time.Minute * 15
 	}
 
 	return options

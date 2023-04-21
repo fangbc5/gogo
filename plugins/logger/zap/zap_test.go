@@ -82,3 +82,17 @@ func TestFile(t *testing.T) {
 	fmt.Println(logger.DefaultLogger)
 	logger.DefaultLogger.Log(logger.InfoLevel, "hello")
 }
+
+func TestAllLevel(t *testing.T) {
+	l, err := NewLogger(logger.WithLevel(logger.InfoLevel))
+	if err != nil {
+		t.Fatal(err)
+	}
+	log := logger.NewHelper(l)
+	log.Trace("trace")
+	log.Debug("debug")
+	log.Info("info")
+	log.Warn("warn")
+	log.Errorf("error")
+	//log.Fatal("fatal")
+}

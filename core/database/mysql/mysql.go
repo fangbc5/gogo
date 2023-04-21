@@ -1,29 +1,19 @@
-package db
+package mysql
 
 import (
 	"github.com/fangbc5/gogo/utils"
-	"log"
-	"time"
-
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
+	"log"
 )
-
-// Mysql MySQL配置结构体
-type Mysql struct {
-	Address  string
-	Port     string
-	Username string
-	Password string
-	Database string
-}
 
 var mysqlClient *gorm.DB
 
-// Conn 连接数据库
-func MysqlConn(config Mysql) {
-	dsn := config.Username + ":" + config.Password + "@tcp(" + config.Address + ":" + config.Port + ")" + "/" + config.Database + "?charset=utf8&parseTime=True&loc=Local"
+// Init 数据库
+func Init(opts ...Option) {
+	options := NewOptions(opts...)
+	dsn := options.Username + ":" + options.Password + "@tcp(" + options.Address + ":" + options.Port + ")" + "/" + options.Database + "?charset=utf8&parseTime=True&loc=Local"
 	//创建连接
 	db, err := gorm.Open(mysql.New(mysql.Config{
 		DSN:                       dsn,
@@ -48,16 +38,17 @@ func MysqlConn(config Mysql) {
 	if err != nil {
 		log.Panicf("database load err %v\n", err)
 	}
-	sqldb.SetMaxIdleConns(10)
-	sqldb.SetMaxOpenConns(100)
-	sqldb.SetConnMaxIdleTime(time.Second * 10)
-	sqldb.SetConnMaxLifetime(time.Hour)
+	sqldb.SetMaxIdleConns(options.MaxIdleConns)
+	sqldb.SetMaxOpenConns(options.MaxOpenConns)
+	sqldb.SetConnMaxIdleTime(options.ConnMaxIdleTime)
+	sqldb.SetConnMaxLifetime(options.ConnMaxLifetime)
 
 	//自动生成表
 	//err = db.AutoMigrate(&model.User{})
 	//if err != nil {
 	//	log.Println(err)
 	//}
+
 	//全局db对象
 	mysqlClient = db
 	if utils.IsNotNull(mysqlClient) {
@@ -65,6 +56,6 @@ func MysqlConn(config Mysql) {
 	}
 }
 
-func MysqlClient() *gorm.DB {
+func GetGormApi() *gorm.DB {
 	return mysqlClient
 }

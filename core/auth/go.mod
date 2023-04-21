@@ -5,9 +5,9 @@ go 1.20
 require (
 	github.com/casbin/casbin/v2 v2.68.0
 	github.com/casbin/gorm-adapter/v3 v3.16.1
-	github.com/fangbc5/gogo/constant v1.0.0
 	github.com/fangbc5/gogo/core/database/mysql v1.0.0
-	github.com/golang-jwt/jwt/v4 v4.5.0
+	github.com/fangbc5/gogo/core/logger v0.0.0-20230420093802-3a6a937e0c9d
+	github.com/google/uuid v1.3.0
 )
 
 require (
@@ -19,7 +19,6 @@ require (
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/golang-sql/civil v0.0.0-20220223132316-b832511892a9 // indirect
 	github.com/golang-sql/sqlexp v0.1.0 // indirect
-	github.com/google/uuid v1.3.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.13.0 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect

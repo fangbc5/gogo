@@ -48,16 +48,8 @@ func (n *noop) Options() Options {
 }
 
 // Generate a new account.
-func (n *noop) Generate(id string, opts ...GenerateOption) (*Account, error) {
-	options := NewGenerateOptions(opts...)
-
-	return &Account{
-		ID:       id,
-		Secret:   options.Secret,
-		Metadata: options.Metadata,
-		Scopes:   options.Scopes,
-		Issuer:   n.Options().Namespace,
-	}, nil
+func (n *noop) Generate(id string, opts ...GenerateOption) (*Token, error) {
+	return &Token{}, nil
 }
 
 // Grant access to a resource.
@@ -85,7 +77,7 @@ func (n *noop) Inspect(token string) (*Account, error) {
 	return &Account{ID: uuid.New().String(), Issuer: n.Options().Namespace}, nil
 }
 
-// Token generation using an account id and secret.
-func (n *noop) Token(opts ...TokenOption) (*Token, error) {
+// Refresh Token generation using an account id and secret.
+func (n *noop) Refresh(opts ...GenerateOption) (*Token, error) {
 	return &Token{}, nil
 }

@@ -18,4 +18,5 @@ use (
 	./plugins/logger/logrus
 	./plugins/logger/zap
 	./utils
+	./core/middleware
 )

@@ -3,12 +3,13 @@ package zap
 import (
 	"context"
 	"fmt"
-	"io"
-	"os"
-	"sync"
-
+	"github.com/natefinch/lumberjack"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"os"
+	"path/filepath"
+	"sync"
+	"time"
 
 	"github.com/fangbc5/gogo/core/logger"
 )
@@ -37,10 +38,10 @@ func (l *zaplog) Init(opts ...logger.Option) error {
 		zapConfig.EncoderConfig = zcconfig
 	}
 
-	writer, ok := l.opts.Context.Value(writerKey{}).(io.Writer)
-	if !ok {
-		writer = os.Stdout
-	}
+	//writer, ok := l.opts.Context.Value(writerKey{}).(io.Writer)
+	//if !ok {
+	//	writer = os.Stdout
+	//}
 
 	skip, ok := l.opts.Context.Value(callerSkipKey{}).(int)
 	if !ok || skip < 1 {
@@ -56,7 +57,7 @@ func (l *zaplog) Init(opts ...logger.Option) error {
 
 	logCore := zapcore.NewCore(
 		zapcore.NewConsoleEncoder(zapConfig.EncoderConfig),
-		zapcore.NewMultiWriteSyncer(zapcore.AddSync(writer)),
+		zapcore.NewMultiWriteSyncer(zapcore.AddSync(getLogWriter())),
 		zapConfig.Level)
 
 	log := zap.New(logCore, zap.AddCaller(), zap.AddCallerSkip(skip), zap.AddStacktrace(zap.DPanicLevel))
@@ -174,7 +175,7 @@ func (l *zaplog) Options() logger.Options {
 	return l.opts
 }
 
-// New builds a new logger based on options
+// NewLogger builds a new logger based on options
 func NewLogger(opts ...logger.Option) (logger.Logger, error) {
 	// Default options
 	options := logger.Options{
@@ -224,4 +225,25 @@ func zapToLoggerLevel(level zapcore.Level) logger.Level {
 	default:
 		return logger.InfoLevel
 	}
+}
+
+func getLogWriter() *lumberjack.Logger {
+	lumberJackLogger := &lumberjack.Logger{
+		Filename:   getFileName(),
+		MaxSize:    10,
+		MaxBackups: 5,
+		MaxAge:     30,
+		Compress:   false,
+	}
+	return lumberJackLogger
+}
+
+const timeFormat = time.DateOnly
+const suffix = "log"
+
+func getFileName() string {
+	return filepath.Join("logs",
+		fmt.Sprintf("%s.%s",
+			time.Now().Format(timeFormat),
+			suffix))
 }

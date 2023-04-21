@@ -29,7 +29,7 @@ func load() *casbin.Enforcer {
 	// The adapter will use the MySQL database named "casbin".
 	// If it doesn't exist, the adapter will create it automatically.
 	// You can also use an already existing gorm instance with gormadapter.NewAdapterByDB(gormInstance)
-	a, err := gormadapter.NewAdapterByDB(database.MysqlClient()) // Your driver and data source.
+	a, err := gormadapter.NewAdapterByDB(database.GetGormApi()) // Your driver and data source.
 	if err != nil {
 		lock.Unlock()
 		log.Panicln(err)

@@ -2,8 +2,6 @@ package middleware
 
 import (
 	"github.com/fangbc5/gogo/constant"
-	"github.com/fangbc5/gogo/core/common"
-	"github.com/fangbc5/gogo/core/db"
 	"github.com/fangbc5/gogo/core/auth"
 	"github.com/fangbc5/gogo/utils"
 	"log"
@@ -38,7 +36,7 @@ func Privilege() gin.HandlerFunc {
 			c.Next()
 		} else if utils.IsBlack(token) {
 			//如果token为空则用户未登录直接返回
-			c.JSON(http.StatusOK, common.GetRspAll(http.StatusUnauthorized, "未登录，请登录后访问", nil))
+			c.JSON(http.StatusOK, model.GetRspAll(http.StatusUnauthorized, "未登录，请登录后访问", nil))
 			c.Abort()
 		} else {
 			//不在白名单中，判断用户是否已登录
