@@ -238,7 +238,7 @@ func getLogWriter() *lumberjack.Logger {
 	return lumberJackLogger
 }
 
-const timeFormat = time.DateOnly
+const timeFormat = "2006-01-02"
 const suffix = "log"
 
 func getFileName() string {

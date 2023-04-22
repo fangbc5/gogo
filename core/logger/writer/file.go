@@ -12,7 +12,7 @@ import (
 
 // timeFormat 时间格式
 // 用于文件名称格式
-const timeFormat = time.DateOnly
+const timeFormat = "2006-01-02"
 
 // FileWriter 文件写入结构体
 type FileWriter struct {
