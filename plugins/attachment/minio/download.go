@@ -2,7 +2,7 @@ package minio
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 
 	"github.com/fangbc5/gogo/attachment/download"
@@ -77,7 +77,7 @@ func (d *Downloader) Load(fileId string) []byte {
 	if err != nil {
 		log.Panicln("文件读取失败！！！", err)
 	}
-	content, err := ioutil.ReadAll(obj)
+	content, err := io.ReadAll(obj)
 	if err != nil {
 		log.Panicln("文件读取失败！！！", err)
 	}
