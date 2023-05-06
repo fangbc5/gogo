@@ -3,7 +3,6 @@ package download
 import "context"
 
 type Options struct {
-	FileId   string
 	Path  string
 	Source string
 	Bucket string
@@ -28,12 +27,6 @@ func WithPath(path string) Option {
 func WithBucket(bucket string) Option {
 	return func(args *Options) {
 		args.Bucket = bucket
-	}
-}
-
-func WithFileId(fileId string) Option {
-	return func(args *Options) {
-		args.FileId = fileId
 	}
 }
 

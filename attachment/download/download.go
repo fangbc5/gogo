@@ -6,7 +6,7 @@ type DownLoad interface {
 	// The Logger options
 	Options() Options
 	// Download file from remote or local file system
-	Load() []byte
+	Load(fileId string) []byte
 	// String returns the name of logger
 	String() string
 }

@@ -12,12 +12,13 @@ use (
 	./core/config/nacos
 	./core/database/mysql
 	./core/database/oracle
+	./core/exception
 	./core/logger
+	./core/middleware
 	./plugins/attachment/file
+	./plugins/attachment/minio
 	./plugins/auth/jwt
 	./plugins/logger/logrus
 	./plugins/logger/zap
 	./utils
-	./core/middleware
-	./core/exception
 )
